@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     private Status status;
     private PlayerAnimatorController animator;
     private AudioSource audioSource;
+    private WeaponAssaultRifle weapon;
 
     private void Awake()
     {
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
         status = GetComponent<Status>();
         animator = GetComponent<PlayerAnimatorController>();
         audioSource = GetComponent<AudioSource>();
+        weapon = GetComponentInChildren<WeaponAssaultRifle>();
     }
 
     private void Update()
@@ -37,6 +39,7 @@ public class PlayerController : MonoBehaviour
         UpdateRotate();
         UpdateMove();
         UpdateJump();
+        UpdateWeaponAction();
     }
 
     private void UpdateRotate()
@@ -86,6 +89,18 @@ public class PlayerController : MonoBehaviour
         if(Input.GetKeyDown(keyCodeJump))
         {
             movement.Jump();
+        }
+    }
+
+    private void UpdateWeaponAction()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            weapon.StartWeaponAction();
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            weapon.StopWeaponAction();
         }
     }
 }
