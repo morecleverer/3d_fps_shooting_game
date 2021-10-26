@@ -1,8 +1,14 @@
 using System.Collections;
 using UnityEngine;
 
+[System.Serializable]
+public class AmmoEvent : UnityEngine.Events.UnityEvent<int, int> { }
+
 public class WeaponAssaultRifle : MonoBehaviour
 {
+    [HideInInspector]
+    public AmmoEvent onAmmoEvent = new AmmoEvent();
+
     [Header("Fire Effects")]
     [SerializeField]
     private GameObject muzzleFlashEffect;
@@ -27,18 +33,23 @@ public class WeaponAssaultRifle : MonoBehaviour
     private PlayerAnimatorController animator;
     private CasingMemoryPool casingMemoryPool;
 
+    public WeaponName weaponName => weaponSetting.weaponName;
 
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         animator = GetComponentInParent<PlayerAnimatorController>();
         casingMemoryPool = GetComponent<CasingMemoryPool>();
+
+        weaponSetting.currentAmmo = weaponSetting.maxAmmo;
     }
 
     private void OnEnable()
     {
         PlaySound(audioClipTakeOutWeapon);
         muzzleFlashEffect.SetActive(false);
+
+        onAmmoEvent.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
     }
 
     public void StartWeaponAction(int type = 0)
@@ -85,6 +96,13 @@ public class WeaponAssaultRifle : MonoBehaviour
             }
 
             lastAttackTime = Time.time;
+
+            if(weaponSetting.currentAmmo <= 0)
+            {
+                return;
+            }
+            weaponSetting.currentAmmo--;
+            onAmmoEvent.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
 
             animator.Play("Fire", -1, 0);
             StartCoroutine("OnMuzzleFlashEffect");
