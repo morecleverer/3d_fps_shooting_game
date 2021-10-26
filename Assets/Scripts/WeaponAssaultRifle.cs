@@ -7,6 +7,10 @@ public class WeaponAssaultRifle : MonoBehaviour
     [SerializeField]
     private GameObject muzzleFlashEffect;
 
+    [Header("SpawnPoints")]
+    [SerializeField]
+    private Transform casingSpawnPoint;
+
     [Header("Audio Clips")]
     [SerializeField]
     private AudioClip audioClipTakeOutWeapon;
@@ -21,12 +25,14 @@ public class WeaponAssaultRifle : MonoBehaviour
 
     private AudioSource audioSource;
     private PlayerAnimatorController animator;
+    private CasingMemoryPool casingMemoryPool;
 
 
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         animator = GetComponentInParent<PlayerAnimatorController>();
+        casingMemoryPool = GetComponent<CasingMemoryPool>();
     }
 
     private void OnEnable()
@@ -83,6 +89,7 @@ public class WeaponAssaultRifle : MonoBehaviour
             animator.Play("Fire", -1, 0);
             StartCoroutine("OnMuzzleFlashEffect");
             PlaySound(audioClipFire);
+            casingMemoryPool.SpawnCasing(casingSpawnPoint.position, transform.right);
         }
     }
 
