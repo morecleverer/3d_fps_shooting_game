@@ -1500,6 +1500,8 @@ MonoBehaviour:
   spritesWeaponIcons:
   - {fileID: 21300044, guid: 5acb27b603af6d44ea6113c4b7b15385, type: 3}
   textAmmo: {fileID: 757569041}
+  magazineUIPrefab: {fileID: 0}
+  magazineParent: {fileID: 0}
 --- !u!1 &1472889455
 GameObject:
   m_ObjectHideFlags: 0
@@ -2248,6 +2250,9 @@ MonoBehaviour:
   onAmmoEvent:
     m_PersistentCalls:
       m_Calls: []
+  onMagazineEvent:
+    m_PersistentCalls:
+      m_Calls: []
   muzzleFlashEffect: {fileID: 1082988301}
   casingSpawnPoint: {fileID: 711443650}
   audioClipTakeOutWeapon: {fileID: 8300000, guid: 2ae41e984ff1f3e4a840a1a46b6a8816, type: 3}
@@ -2255,6 +2260,8 @@ MonoBehaviour:
   audioClipReload: {fileID: 8300000, guid: 5b907074256e36d41b92e89fb0790633, type: 3}
   weaponSetting:
     weaponName: 0
+    currentMagazine: 0
+    maxMagazine: 8
     currentAmmo: 0
     maxAmmo: 30
     attackRate: 0.1

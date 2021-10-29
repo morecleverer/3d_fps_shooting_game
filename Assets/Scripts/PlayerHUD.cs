@@ -22,12 +22,23 @@ public class PlayerHUD : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI textAmmo;
 
+    [Header("Magazine")]
+    [SerializeField]
+    private GameObject magazineUIPrefab;
+    [SerializeField]
+    private Transform magazineParent;
+
+    private List<GameObject> magazineList;
+
+
     // Start is called before the first frame update
     void Awake()
     {
         SetupWeapon();
+        SetupMagazine();
 
         weapon.onAmmoEvent.AddListener(UpdateAmmoHUD);
+        weapon.onMagazineEvent.AddListener(UpdateMagazineHUD);
     }
 
     private void SetupWeapon()
@@ -39,4 +50,32 @@ public class PlayerHUD : MonoBehaviour
     {
         textAmmo.text = $"<size=40>{currentAmmo}/</size>{maxAmmo}";
     }
+
+    private void SetupMagazine()
+    {
+        magazineList = new List<GameObject>();
+        for(int i = 0; i < weapon.MaxMagazine; ++i)
+        {
+            GameObject clone = Instantiate(magazineUIPrefab);
+            clone.transform.SetParent(magazineParent);
+            clone.SetActive(false);
+
+            magazineList.Add(clone);
+        }
+        for (int i = 0; i < weapon.CurrentMagazine; ++ i)
+        {
+            magazineList[i].SetActive(true);
+        }
+    }
+    private void UpdateMagazineHUD(int currentMagazine)
+    {
+        for(int i = 0; i < magazineList.Count; ++ i)
+        {
+            magazineList[i].SetActive(false);
+        }
+        for(int i = 0; i <currentMagazine; ++ i)
+        {
+            magazineList[i].SetActive(true);
+        }
+    } 
 }

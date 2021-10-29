@@ -3,11 +3,17 @@ using UnityEngine;
 
 [System.Serializable]
 public class AmmoEvent : UnityEngine.Events.UnityEvent<int, int> { }
+[System.Serializable]
+public class MagazineEvent : UnityEngine.Events.UnityEvent<int> { }
 
 public class WeaponAssaultRifle : MonoBehaviour
 {
     [HideInInspector]
     public AmmoEvent onAmmoEvent = new AmmoEvent();
+    [HideInInspector]
+    public MagazineEvent onMagazineEvent = new MagazineEvent();
+
+
 
     [Header("Fire Effects")]
     [SerializeField]
@@ -37,12 +43,16 @@ public class WeaponAssaultRifle : MonoBehaviour
     private CasingMemoryPool casingMemoryPool;
 
     public WeaponName weaponName => weaponSetting.weaponName;
+    public int CurrentMagazine => weaponSetting.currentMagazine;
+    public int MaxMagazine => weaponSetting.maxMagazine;
 
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         animator = GetComponentInParent<PlayerAnimatorController>();
         casingMemoryPool = GetComponent<CasingMemoryPool>();
+
+        weaponSetting.currentMagazine = weaponSetting.maxMagazine;
 
         weaponSetting.currentAmmo = weaponSetting.maxAmmo;
     }
@@ -51,6 +61,8 @@ public class WeaponAssaultRifle : MonoBehaviour
     {
         PlaySound(audioClipTakeOutWeapon);
         muzzleFlashEffect.SetActive(false);
+
+        onMagazineEvent.Invoke(weaponSetting.currentMagazine);
 
         onAmmoEvent.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
     }
@@ -83,7 +95,7 @@ public class WeaponAssaultRifle : MonoBehaviour
 
     public void StartReload()
     {
-        if (isReload == true) return;
+        if (isReload == true || weaponSetting.currentMagazine <= 0) return;
 
         StopWeaponAction();
         StartCoroutine("OnReload");
@@ -145,6 +157,9 @@ public class WeaponAssaultRifle : MonoBehaviour
             if(audioSource.isPlaying == false && animator.CurrentAnimationIs("Movement"))
             {
                 isReload = false;
+
+                weaponSetting.currentMagazine--;
+                onMagazineEvent.Invoke(weaponSetting.currentMagazine);
 
                 weaponSetting.currentAmmo = weaponSetting.maxAmmo;
                 onAmmoEvent.Invoke(weaponSetting.currentAmmo, weaponSetting.maxAmmo);
