@@ -55,8 +55,8 @@ public class WeaponAssaultRifle : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         animator = GetComponentInParent<PlayerAnimatorController>();
         casingMemoryPool = GetComponent<CasingMemoryPool>();
-        impactMemoryPool = GetComponent<impactMemoryPool>();
-        mainCamera = mainCamera.main;
+        impactMemoryPool = GetComponent<ImpactMemoryPool>();
+        mainCamera = Camera.main;
 
         weaponSetting.currentMagazine = weaponSetting.maxMagazine;
 
