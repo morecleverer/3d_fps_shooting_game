@@ -60,12 +60,11 @@ public class PlayerController : MonoBehaviour
         {
             bool isRun = false;
 
-            if (z > 0) isRun = Input.GetKey(keyCodeRun);
+            if (z > 0 && !animator.AimModeIs) isRun = Input.GetKey(keyCodeRun);
 
             movement.MoveSpeed = isRun == true ? status.RunSpeed : status.WalkSpeed;
             animator.MoveSpeed = isRun == true ? 1 : 0.5f;
             audioSource.clip = isRun == true ? audioClipRun : audioClipWalk;
-
             if ( audioSource.isPlaying == false )
             {
                 audioSource.loop = true;
@@ -108,10 +107,12 @@ public class PlayerController : MonoBehaviour
         if(Input.GetMouseButtonDown(1))
         {
             weapon.StartWeaponAction(1);
+            print("Down");
         }
         else if(Input.GetMouseButtonUp(1))
         {
             weapon.StopWeaponAction(1);
+            print("Up");
         }
 
         if (Input.GetKeyDown(keyCodeReload))

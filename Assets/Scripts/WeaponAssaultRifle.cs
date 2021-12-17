@@ -122,8 +122,8 @@ public class WeaponAssaultRifle : MonoBehaviour
 
     public void StartReload()
     {
-        if (isReload == true || weaponSetting.currentMagazine <= 0) return;
-
+        if (isReload == true || weaponSetting.currentMagazine <= 0 || animator.AimModeIs) return;
+        print("r");
         StopWeaponAction();
         StartCoroutine("OnReload");
     }
@@ -161,8 +161,6 @@ public class WeaponAssaultRifle : MonoBehaviour
 
             if (animator.AimModeIs == false) StartCoroutine("OnMuzzleFlashEffect");
 
-            animator.Play("Fire", -1, 0);
-            StartCoroutine("OnMuzzleFlashEffect");
             PlaySound(audioClipFire);
             casingMemoryPool.SpawnCasing(casingSpawnPoint.position, transform.right);
 
