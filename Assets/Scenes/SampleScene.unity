@@ -2436,6 +2436,7 @@ MonoBehaviour:
     attackRate: 0.1
     attackDistance: 30
     isAutomaticAttack: 1
+  imageAim: {fileID: 1665708942}
 --- !u!114 &2122769824
 MonoBehaviour:
   m_ObjectHideFlags: 0
