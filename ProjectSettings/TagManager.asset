@@ -6,6 +6,9 @@ TagManager:
   tags:
   - ImpactNormal
   - ImpactObstacle
+  - EnemyWeapon
+  - StartWall
+  - BossWall
   layers:
   - Default
   - TransparentFX
@@ -17,7 +20,7 @@ TagManager:
   - Casing
   - NoNo
   - Floor
-  - 
+  - StartWall
   - 
   - 
   - 

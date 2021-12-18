@@ -26,7 +26,7 @@ public class ImpactMemoryPool : MonoBehaviour
         else if ( hit.transform.CompareTag("ImpactObstacle"))
         {
             OnSpawnImpact(ImpactType.Obstacle, hit.point, Quaternion.LookRotation(hit.normal));
-            hit.collider.GetComponent<FollowPlayer>().health -= 20;
+            hit.collider.GetComponent<Enemy>().health -= 20;
         }
     }
 

@@ -190,7 +190,6 @@ public class WeaponAssaultRifle : MonoBehaviour
             {
                 isReload = false;
 
-                weaponSetting.currentMagazine--;
                 onMagazineEvent.Invoke(weaponSetting.currentMagazine);
 
                 weaponSetting.currentAmmo = weaponSetting.maxAmmo;
