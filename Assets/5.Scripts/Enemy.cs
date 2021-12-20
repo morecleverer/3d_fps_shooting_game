@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
         anim = GetComponent<Animator>();
         target = GameObject.FindWithTag("Player").transform;
         memoryPool = pool;
-        speed = type == 0 ? 3 : 2;
+        speed = type == 0 ? 4 : 3;
         agent.enabled = true;
         capsule.enabled = true;
         isDie = false;

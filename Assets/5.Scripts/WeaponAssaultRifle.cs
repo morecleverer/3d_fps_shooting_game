@@ -35,8 +35,7 @@ public class WeaponAssaultRifle : MonoBehaviour
     private AudioClip audioClipReload;
 
     [Header("Weapon Setting")]
-    [SerializeField]
-    private WeaponSetting weaponSetting;
+    public WeaponSetting weaponSetting;
 
     [Header("Aim UI")]
     [SerializeField]

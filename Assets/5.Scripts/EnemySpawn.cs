@@ -15,6 +15,7 @@ public class EnemySpawn : MonoBehaviour
     private MemoryPool memoryPool_3;
 
     int count = 0;
+    public int maxcount = 10;
     
     void Awake()
     {
@@ -31,7 +32,7 @@ public class EnemySpawn : MonoBehaviour
 
     public void Spawning()
     {
-        if (count > 10)
+        if (count > maxcount)
             return; 
 
         switch (Random.Range(0, 3))

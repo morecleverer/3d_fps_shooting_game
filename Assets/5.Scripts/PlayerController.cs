@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     private PlayerAnimatorController animator;
     private AudioSource audioSource;
     private WeaponAssaultRifle weapon;
+    private Player player;
 
     private void Awake()
     {
@@ -34,6 +35,7 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<PlayerAnimatorController>();
         audioSource = GetComponent<AudioSource>();
         weapon = GetComponentInChildren<WeaponAssaultRifle>();
+        player = GetComponentInChildren<Player>();
     }
 
     private void Update()
@@ -56,7 +58,7 @@ public class PlayerController : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
 
-        if (x != 0 || z != 0)
+        if (x != 0 || z != 0 )
         {
             bool isRun = false;
 
@@ -80,6 +82,18 @@ public class PlayerController : MonoBehaviour
             {
                 audioSource.Stop();
             }
+        }
+        if (player.isDie)
+        {
+            movement.MoveSpeed = 0;
+            animator.MoveSpeed = 0;
+            if (audioSource.isPlaying == true)
+            {
+                audioSource.Stop();
+            }
+            keyCodeRun = KeyCode.F1;
+            keyCodeJump = KeyCode.F2;
+            keyCodeReload = KeyCode.F3;
         }
 
         movement.MoveTo(new Vector3(x, 0, z));

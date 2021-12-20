@@ -9,6 +9,7 @@ TagManager:
   - EnemyWeapon
   - StartWall
   - BossWall
+  - Falling
   layers:
   - Default
   - TransparentFX
@@ -21,8 +22,8 @@ TagManager:
   - NoNo
   - Floor
   - StartWall
-  - 
-  - 
+  - ssWall
+  - Enemy
   - 
   - 
   - 

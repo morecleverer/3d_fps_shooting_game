@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class Player : MonoBehaviour
@@ -16,15 +17,17 @@ public class Player : MonoBehaviour
     public GameObject door4;
     public GameObject door5;
     public GameObject door6;
+    public GameObject GameOver;
     public Animator panel_Anim;
+    public WeaponAssaultRifle weaponAssaultRifle;
     public bool isClose1;
     public bool isClose2;
+    public bool isDie;
     public int stage = 0;
     public int catchEnemy = 0;
     public int stage1enemy = 30;
-    void Start()
+    void Awake()
     {
-        
     }
 
     // Update is called once per frame
@@ -38,6 +41,16 @@ public class Player : MonoBehaviour
             door3.transform.Rotate(new Vector3(0, 80, 0), Space.Self);
             door4.transform.Rotate(new Vector3(0, -80, 0), Space.Self);
             health = 100;
+        }
+
+        if(health<=0 && !isDie)
+        {
+            isDie = true;
+
+            weaponAssaultRifle.weaponSetting.currentAmmo = 0;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+            GameOver.SetActive(true);
         }
 
     }
@@ -70,6 +83,16 @@ public class Player : MonoBehaviour
             panel_Anim.SetTrigger("not");
             stageText.color = Color.red;
         }
+        if(other.tag == "Falling")
+        {
+            health = 0;
+        }
+    }
+
+    public void Replay()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(0);
     }
 
     IEnumerator BloodScreen()
