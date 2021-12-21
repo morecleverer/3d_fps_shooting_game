@@ -14,9 +14,10 @@ public class Enemy : MonoBehaviour
     public int speed;
     bool isDie = false;
     public bool isAttack = false;
+    public float dist;
     public TrailRenderer trailRenderer;
     MemoryPool memoryPool;
-    public Player player;
+    Player player;
 
     public Transform target;
 
@@ -25,11 +26,12 @@ public class Enemy : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         target = GameObject.FindWithTag("Player").transform;
+        player = target.GetComponent<Player>();
     }
 
     public void Setup(MemoryPool pool)
     {
-        health = type == 1 ? 80 : 60;
+        health = type == 0 ? 60 : type == 1 ? 80 : 160;
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         target = GameObject.FindWithTag("Player").transform;
@@ -47,20 +49,25 @@ public class Enemy : MonoBehaviour
     {
         if(health>0 && !isAttack )
             agent.SetDestination(target.position);
+        
+            if (Vector3.Distance(target.position, transform.position) <= dist && health > 0)
+            {
+                if (!isAttack)
+                {
+                    print(2);
+                    isAttack = true;
+                    StartCoroutine(Attack());
+                }
 
-        if (Vector3.Distance(target.position, transform.position) <= 2f && !isAttack && health>0)
-        {
-            isAttack = true;
-           StartCoroutine( Attack());
-            
-        }
+            }
+        
         if (health <= 0 && !isDie)
         {
             isDie = true;
             StartCoroutine(Die());
             
         }
-   
+        agent.speed = speed;
 
     }
     IEnumerator Die()
@@ -71,6 +78,7 @@ public class Enemy : MonoBehaviour
         capsule.enabled = false;
         yield return new WaitForSeconds(2);
         player.catchEnemy++;
+        if(type!=3)
         memoryPool.DeactivatePoolItem(this.gameObject);
     }
 
@@ -78,21 +86,20 @@ public class Enemy : MonoBehaviour
     {
         agent.speed = 0;
         anim.SetBool("isAttack",true);
+        yield return new WaitForSeconds(0.1f);
         anim.applyRootMotion = true;
-        yield return new WaitForSeconds(0.3f);
         hitBox.enabled = true;
-        if(type==1)
+        if(type!=0)
             trailRenderer.enabled = true;
+        yield return new WaitForSeconds(0.2f);
         while (anim.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
         {
             yield return null;
-            
         }
-        Debug.Log(anim.GetCurrentAnimatorStateInfo(0));
         hitBox.enabled = false;
         anim.SetBool("isAttack", false);
         anim.applyRootMotion = true;
-        if(type==1)
+        if(type!=0)
             trailRenderer.enabled = false;
 
         agent.speed = speed;

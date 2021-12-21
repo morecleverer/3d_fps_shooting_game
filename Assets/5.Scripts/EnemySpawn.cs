@@ -39,17 +39,17 @@ public class EnemySpawn : MonoBehaviour
         {
             case 0:
                 GameObject item_1 = memoryPool_1.ActivatePoolItem();
-                item_1.transform.position = new Vector3(transform.position.x, 8.09126f, transform.position.z);
+                item_1.transform.position = transform.position;
                 item_1.GetComponent<Enemy>().Setup(memoryPool_1);
                 break;
             case 1:
                 GameObject item_2 = memoryPool_2.ActivatePoolItem();
-                item_2.transform.position = new Vector3(transform.position.x, 8.09126f, transform.position.z);
+                item_2.transform.position = transform.position;
                 item_2.GetComponent<Enemy>().Setup(memoryPool_2);
                 break;
             case 2:
                 GameObject item_3 = memoryPool_3.ActivatePoolItem();
-                item_3.transform.position = new Vector3(transform.position.x, 8.09126f, transform.position.z);
+                item_3.transform.position = transform.position;
                 item_3.GetComponent<Enemy>().Setup(memoryPool_3);
                 break;
         }

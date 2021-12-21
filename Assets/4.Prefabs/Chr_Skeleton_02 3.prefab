@@ -552,8 +552,8 @@ MonoBehaviour:
   type: 1
   speed: 0
   isAttack: 0
+  dist: 2
   trailRenderer: {fileID: 92120368069843584}
-  player: {fileID: 0}
   target: {fileID: 0}
 --- !u!195 &1583785961103232145
 NavMeshAgent:

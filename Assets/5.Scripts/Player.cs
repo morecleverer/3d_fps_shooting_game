@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     public float health = 100f;
     public Image bloodScreen;
     public Image healthbar;
+    public Image bosshealthbar;
+    public GameObject bosshealth;
     public TextMeshProUGUI stageText;
     public GameObject door1;
     public GameObject door2;
@@ -18,14 +20,22 @@ public class Player : MonoBehaviour
     public GameObject door5;
     public GameObject door6;
     public GameObject GameOver;
+    public GameObject gameClear;
+    public GameObject Spawner1;
+    public GameObject Spawner2;
+    public GameObject Spawner3;
+    public GameObject Spawner4;
+    public GameObject boss;
     public Animator panel_Anim;
     public WeaponAssaultRifle weaponAssaultRifle;
     public bool isClose1;
     public bool isClose2;
     public bool isDie;
+    public bool isDone;
     public int stage = 0;
     public int catchEnemy = 0;
     public int stage1enemy = 30;
+    public Text enemyText;
     void Awake()
     {
     }
@@ -34,12 +44,15 @@ public class Player : MonoBehaviour
     void Update()
     {
         healthbar.fillAmount = health / 100;
+        bosshealthbar.fillAmount = (float)boss.GetComponent<Enemy>().health / 5000;
 
         if(stage==0 && catchEnemy >= stage1enemy)
         {
             stage++;
             door3.transform.Rotate(new Vector3(0, 80, 0), Space.Self);
             door4.transform.Rotate(new Vector3(0, -80, 0), Space.Self);
+            panel_Anim.SetTrigger("not");
+            stageText.text = "STAGE1 CLEAR";
             health = 100;
         }
 
@@ -53,7 +66,40 @@ public class Player : MonoBehaviour
             GameOver.SetActive(true);
         }
 
+        if(boss.GetComponent<Enemy>().health<=60 && catchEnemy < 84)
+        {
+            if (!isDone)
+            {
+                isDone = true;
+                panel_Anim.SetTrigger("not");
+                stageText.color = Color.white;
+                stageText.text = "Kill All Enemy";
+
+            }
+            
+            boss.GetComponent<Enemy>().health = 60;
+        }
+
+        if (boss.GetComponent<Enemy>().health <= 0)
+        {
+            Invoke("GameClear", 3f);
+        }
+        if (isDone && catchEnemy >= 84)
+            boss.GetComponent<Enemy>().speed = 4;
+
+        enemyText.text = catchEnemy.ToString();
     }
+
+    void GameClear()
+    {
+        isDie = true;
+
+        weaponAssaultRifle.weaponSetting.currentAmmo = 0;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        gameClear.SetActive(true);
+    }
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "ImpactObstacle")
@@ -69,6 +115,8 @@ public class Player : MonoBehaviour
         if (other.tag == "StartWall" && !isClose1)
         {
             isClose1 = true;
+            Spawner1.SetActive(true);
+            Spawner2.SetActive(true);
             door1.transform.Rotate(new Vector3(0, 80, 0),Space.Self);
             door2.transform.Rotate(new Vector3(0, -80, 0),Space.Self);
             stageText.text = "STAGE 1";
@@ -77,11 +125,15 @@ public class Player : MonoBehaviour
         if (other.tag == "BossWall" && !isClose2)
         {
             isClose2 = true;
+            Spawner3.SetActive(true);
+            Spawner4.SetActive(true);
             door5.transform.Rotate(new Vector3(0, 80, 0), Space.Self);
             door6.transform.Rotate(new Vector3(0, -80, 0), Space.Self);
             stageText.text = "STAGE BOSS";
             panel_Anim.SetTrigger("not");
             stageText.color = Color.red;
+            boss.SetActive(true);
+            bosshealth.SetActive(true);
         }
         if(other.tag == "Falling")
         {
